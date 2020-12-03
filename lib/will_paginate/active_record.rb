@@ -207,8 +207,7 @@ module WillPaginate
             query = <<-SQL
               SELECT * FROM (
                 SELECT rownum rnum, a.* FROM (#{query}) a
-                WHERE rownum <= #{pager.offset + pager.per_page}
-              ) WHERE rnum >= #{pager.offset}
+              ) WHERE rnum >= #{pager.offset} AND rnum <= #{pager.offset + pager.per_page}
             SQL
           elsif (self.connection.adapter_name =~ /^sqlserver/i)
             query << " OFFSET #{pager.offset} ROWS FETCH NEXT #{pager.per_page} ROWS ONLY"
